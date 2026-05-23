@@ -11,12 +11,19 @@ import {
 } from "@mui/material";
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 
+const formData = {
+  email : "",
+  password : ""
+};
+
 const LoginEmp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loginData, setLoginData] = useState(formData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login submitted");
+    console.log("Login submitted", loginData);
+    setLoginData(formData);
   };
 
   return (
@@ -75,14 +82,17 @@ const LoginEmp = () => {
           </Box>
 
           {/* Form */}
-          <Box component="form" onSubmit={handleSubmit}>
+          <Box component="form" onSubmit={(e) => handleSubmit(e)}>
             {/* Email */}
             <TextField
               fullWidth
+              value={loginData.email}
+              onChange={(e) => setLoginData({ ...loginData, email: e.target.value})}
               label="Email Address"
               type="email"
               margin="normal"
               variant="outlined"
+              required
               placeholder="Enter your email"
               InputProps={{
                 startAdornment: (
@@ -107,11 +117,14 @@ const LoginEmp = () => {
             {/* Password */}
             <TextField
               fullWidth
+              value={loginData.password}
+              onChange={(e)=> setLoginData({ ...loginData, password: e.target.value})}
               label="Password"
               type={showPassword ? "text" : "password"}
               margin="normal"
               variant="outlined"
               placeholder="Enter your password"
+              required
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
