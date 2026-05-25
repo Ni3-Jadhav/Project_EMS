@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
@@ -45,13 +39,13 @@ const taskData = [
 const TaskNumbers = () => {
   return (
     <Box sx={{ mt: 3 }}>
-      <Grid container spacing={3} sx={{ justifyContent: "space-around"}}>
+      <Grid container spacing={3} sx={{ justifyContent: "space-around" }}>
         {taskData.map((task) => (
           <Grid
             item
             sx={{
-              width:{xs: "90%", sm: "45%", md: "20%", lg: "20%"},
-              height: {xs: "300px", sm: "250px", md: "200px", lg: "200px" },
+              width: { xs: "90%", sm: "45%", md: "20%", lg: "20%" },
+              height: { xs: "300px", sm: "250px", md: "200px", lg: "200px" },
             }}
             xs={12}
             sm={6}

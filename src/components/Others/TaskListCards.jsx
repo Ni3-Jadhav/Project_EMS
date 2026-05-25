@@ -91,14 +91,12 @@ const TaskListCards = () => {
           },
 
           "&::-webkit-scrollbar-thumb": {
-            background:
-              "linear-gradient(90deg, #2563eb, #3b82f6)",
+            background: "linear-gradient(90deg, #2563eb, #3b82f6)",
             borderRadius: "10px",
           },
 
           "&::-webkit-scrollbar-thumb:hover": {
-            background:
-              "linear-gradient(90deg, #1d4ed8, #2563eb)",
+            background: "linear-gradient(90deg, #1d4ed8, #2563eb)",
           },
         }}
       >
@@ -111,7 +109,7 @@ const TaskListCards = () => {
                 xs: "80%",
                 sm: "40%",
                 md: "40%",
-                lg: "30%"
+                lg: "30%",
               },
 
               flexShrink: 0,
@@ -261,14 +259,14 @@ const TaskListCards = () => {
 
             {/* Header */}
             <Stack
-                sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mb: 2,
-                    flexWrap: "wrap",
-                }}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 2,
+                flexWrap: "wrap",
+              }}
             >
               <Chip
                 label={selectedTask.priority}
@@ -287,9 +285,7 @@ const TaskListCards = () => {
                     textAlign: "right",
                   }}
                 >
-                  Created:
-                  {" "}
-                  {selectedTask.createdDate} |{" "}
+                  Created: {selectedTask.createdDate} |{" "}
                   {selectedTask.createdTime}
                 </Typography>
 
@@ -300,9 +296,7 @@ const TaskListCards = () => {
                     textAlign: "right",
                   }}
                 >
-                  Updated:
-                  {" "}
-                  {selectedTask.updatedDate} |{" "}
+                  Updated: {selectedTask.updatedDate} |{" "}
                   {selectedTask.updatedTime}
                 </Typography>
               </Box>
@@ -351,12 +345,11 @@ const TaskListCards = () => {
                 {selectedTask.description}
                 <br />
                 <br />
-                This task requires proper implementation,
-                responsive layouts, optimized component
-                structures, and clean UI consistency across
-                the employee management system dashboard.
-                Ensure all modules follow the same design
-                language and maintain reusable architecture.
+                This task requires proper implementation, responsive layouts,
+                optimized component structures, and clean UI consistency across
+                the employee management system dashboard. Ensure all modules
+                follow the same design language and maintain reusable
+                architecture.
               </Typography>
             </Box>
           </DialogContent>

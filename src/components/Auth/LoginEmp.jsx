@@ -12,8 +12,8 @@ import {
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 
 const formData = {
-  email : "",
-  password : ""
+  email: "",
+  password: "",
 };
 
 const LoginEmp = () => {
@@ -87,7 +87,9 @@ const LoginEmp = () => {
             <TextField
               fullWidth
               value={loginData.email}
-              onChange={(e) => setLoginData({ ...loginData, email: e.target.value})}
+              onChange={(e) =>
+                setLoginData({ ...loginData, email: e.target.value })
+              }
               label="Email Address"
               type="email"
               margin="normal"
@@ -118,7 +120,9 @@ const LoginEmp = () => {
             <TextField
               fullWidth
               value={loginData.password}
-              onChange={(e)=> setLoginData({ ...loginData, password: e.target.value})}
+              onChange={(e) =>
+                setLoginData({ ...loginData, password: e.target.value })
+              }
               label="Password"
               type={showPassword ? "text" : "password"}
               margin="normal"
@@ -133,16 +137,8 @@ const LoginEmp = () => {
                 ),
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        setShowPassword(!showPassword)
-                      }
-                    >
-                      {showPassword ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
+                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -172,8 +168,7 @@ const LoginEmp = () => {
                 fontSize: "1rem",
                 fontWeight: 600,
                 textTransform: "none",
-                background:
-                  "linear-gradient(90deg, #2563eb, #1d4ed8)",
+                background: "linear-gradient(90deg, #2563eb, #1d4ed8)",
 
                 transition: "all 0.3s ease",
 
