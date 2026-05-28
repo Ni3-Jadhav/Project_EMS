@@ -11,19 +11,65 @@ import {
 } from "@mui/material";
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 
-const formData = {
+const initialFormData = {
   email: "",
   password: "",
 };
 
-const LoginEmp = () => {
+const LoginEmp = ({ handleLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState(formData);
 
+  const [loginData, setLoginData] = useState(initialFormData);
+
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
+  // Validation Function
+  const validateForm = () => {
+    let tempErrors = {};
+    let isValid = true;
+
+    // Email Validation
+    if (!loginData.email) {
+      tempErrors.email = "Email is required";
+      isValid = false;
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(loginData.email)
+    ) {
+      tempErrors.email = "Enter a valid email address";
+      isValid = false;
+    }
+
+    // Password Validation
+    if (!loginData.password) {
+      tempErrors.password = "Password is required";
+      isValid = false;
+    } else if (loginData.password.length < 6) {
+      tempErrors.password = "Password must be at least 6 characters";
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+
+    return isValid;
+  };
+
+  // Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login submitted", loginData);
-    setLoginData(formData);
+
+    if (validateForm()) {
+      console.log("Login Submitted", loginData);
+
+      setLoginData(initialFormData);
+      handleLogin(loginData.email, loginData.password);
+      setErrors({
+        email: "",
+        password: "",
+      });
+    }
   };
 
   return (
@@ -82,19 +128,22 @@ const LoginEmp = () => {
           </Box>
 
           {/* Form */}
-          <Box component="form" onSubmit={(e) => handleSubmit(e)}>
+          <Box component="form" onSubmit={handleSubmit}>
             {/* Email */}
             <TextField
               fullWidth
-              value={loginData.email}
-              onChange={(e) =>
-                setLoginData({ ...loginData, email: e.target.value })
-              }
               label="Email Address"
               type="email"
               margin="normal"
-              variant="outlined"
-              required
+              value={loginData.email}
+              onChange={(e) =>
+                setLoginData({
+                  ...loginData,
+                  email: e.target.value,
+                })
+              }
+              error={Boolean(errors.email)}
+              helperText={errors.email}
               placeholder="Enter your email"
               InputProps={{
                 startAdornment: (
@@ -119,16 +168,19 @@ const LoginEmp = () => {
             {/* Password */}
             <TextField
               fullWidth
-              value={loginData.password}
-              onChange={(e) =>
-                setLoginData({ ...loginData, password: e.target.value })
-              }
               label="Password"
               type={showPassword ? "text" : "password"}
               margin="normal"
-              variant="outlined"
+              value={loginData.password}
+              onChange={(e) =>
+                setLoginData({
+                  ...loginData,
+                  password: e.target.value,
+                })
+              }
+              error={Boolean(errors.password)}
+              helperText={errors.password}
               placeholder="Enter your password"
-              required
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
