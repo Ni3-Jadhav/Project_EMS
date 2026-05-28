@@ -3,10 +3,11 @@ import EmployeeDashboadHeader from "../Others/EmployeeDashboadHeader";
 import TaskNumbers from "../Others/TaskNumbers";
 import TaskListCards from "../Others/TaskListCards";
 
-const EmployeeDashBoard = () => {
+const EmployeeDashBoard = ({ userData }) => {
+  console.log(userData);
   return (
     <>
-      <EmployeeDashboadHeader employeeName="TusharKumar" />
+      <EmployeeDashboadHeader employeeName={userData.name} />
       <TaskNumbers />
       <TaskListCards />
     </>
