@@ -13,58 +13,7 @@ import {
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { StackedBarChart } from "@mui/icons-material";
 
-const taskList = [
-  {
-    id: 1,
-    priority: "Very High",
-    title: "Complete Employee Dashboard UI",
-    createdDate: "23 May 2026",
-    createdTime: "10:30 AM",
-    updatedDate: "24 May 2026",
-    updatedTime: "02:15 PM",
-    color: "#ef4444",
-    description:
-      "Design and implement a responsive employee dashboard interface using React.js and Material UI. Include task cards, charts, employee statistics, and optimized layouts for mobile, tablet, and desktop screens.",
-  },
-  {
-    id: 2,
-    priority: "High",
-    title: "API Integration for Attendance",
-    createdDate: "21 May 2026",
-    createdTime: "09:20 AM",
-    updatedDate: "22 May 2026",
-    updatedTime: "05:40 PM",
-    color: "#f59e0b",
-    description:
-      "Integrate attendance APIs with frontend modules and display employee attendance records dynamically. Handle loading states, validations, and proper error handling for failed API requests.",
-  },
-  {
-    id: 3,
-    priority: "Medium",
-    title: "Optimize Dashboard Performance",
-    createdDate: "20 May 2026",
-    createdTime: "11:00 AM",
-    updatedDate: "21 May 2026",
-    updatedTime: "04:10 PM",
-    color: "#2563eb",
-    description:
-      "Improve rendering performance by optimizing reusable components, reducing unnecessary re-renders, and implementing lazy loading where needed for large dashboard sections.",
-  },
-  {
-    id: 4,
-    priority: "Low",
-    title: "Prepare Weekly Report",
-    createdDate: "18 May 2026",
-    createdTime: "01:00 PM",
-    updatedDate: "19 May 2026",
-    updatedTime: "03:25 PM",
-    color: "#10b981",
-    description:
-      "Generate and prepare the weekly employee activity report with project updates, completed tasks, pending items, and team performance summaries for management review.",
-  },
-];
-
-const TaskListCards = () => {
+const TaskListCards = ({ userData }) => {
   const [selectedTask, setSelectedTask] = useState(null);
 
   return (
@@ -100,7 +49,7 @@ const TaskListCards = () => {
           },
         }}
       >
-        {taskList.map((task) => (
+        {userData?.tasks.map((task) => (
           <Card
             key={task.id}
             onClick={() => setSelectedTask(task)}
@@ -134,7 +83,15 @@ const TaskListCards = () => {
                 left: 0,
                 width: "100%",
                 height: "5px",
-                background: task.color,
+
+                background:
+                  task.priority === "Very High"
+                    ? "#ef4444"
+                    : task.priority === "High"
+                      ? "#f59e0b"
+                      : task.priority === "Medium"
+                        ? "#2563eb"
+                        : "#10b981",
               },
             }}
           >
@@ -152,8 +109,24 @@ const TaskListCards = () => {
                 label={task.priority}
                 size="small"
                 sx={{
-                  background: `${task.color}20`,
-                  color: task.color,
+                  background:
+                    task.priority === "Very High"
+                      ? "#ef444420"
+                      : task.priority === "High"
+                        ? "#f59e0b20"
+                        : task.priority === "Medium"
+                          ? "#2563eb20"
+                          : "#10b98120",
+
+                  color:
+                    task.priority === "Very High"
+                      ? "#ef4444"
+                      : task.priority === "High"
+                        ? "#f59e0b"
+                        : task.priority === "Medium"
+                          ? "#2563eb"
+                          : "#10b981",
+
                   fontWeight: 600,
                   borderRadius: "8px",
                 }}
@@ -166,7 +139,7 @@ const TaskListCards = () => {
                   fontWeight: 500,
                 }}
               >
-                {task.createdDate}
+                {task.date}
               </Typography>
             </Stack>
 
@@ -199,22 +172,57 @@ const TaskListCards = () => {
               {task.description}
             </Typography>
 
-            {/* View More */}
-            <Typography
-              sx={{
-                mt: 2,
-                color: "#2563eb",
-                fontWeight: 600,
-                fontSize: "0.92rem",
-                width: "fit-content",
-
-                "&:hover": {
-                  textDecoration: "underline",
-                },
-              }}
+            {/* Footer */}
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              mt={2}
             >
-              View More
-            </Typography>
+              <Typography
+                sx={{
+                  color: "#2563eb",
+                  fontWeight: 600,
+                  fontSize: "0.92rem",
+
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                View More
+              </Typography>
+
+              <Chip
+                label={task.status}
+                size="small"
+                sx={{
+                  borderRadius: "8px",
+                  fontWeight: 600,
+                  background:
+                    task.status === "Completed"
+                      ? "#16a34a20"
+                      : task.status === "In Progress"
+                        ? "#2563eb20"
+                        : task.status === "Pending"
+                          ? "#f59e0b20"
+                          : task.status === "Failed Task"
+                            ? "#ef444420"
+                            : "#7c3aed20",
+
+                  color:
+                    task.status === "Completed"
+                      ? "#16a34a"
+                      : task.status === "In Progress"
+                        ? "#2563eb"
+                        : task.status === "Pending"
+                          ? "#f59e0b"
+                          : task.status === "Failed Task"
+                            ? "#ef4444"
+                            : "#7c3aed",
+                }}
+              />
+            </Stack>
           </Card>
         ))}
       </Box>
@@ -271,8 +279,26 @@ const TaskListCards = () => {
               <Chip
                 label={selectedTask.priority}
                 sx={{
-                  background: `${selectedTask.color}20`,
-                  color: selectedTask.color,
+                  background:
+                    selectedTask.status === "Completed"
+                      ? "#16a34a20"
+                      : selectedTask.status === "In Progress"
+                        ? "#2563eb20"
+                        : selectedTask.status === "Pending"
+                          ? "#f59e0b20"
+                          : selectedTask.status === "Failed Task"
+                            ? "#ef444420"
+                            : "#7c3aed20",
+                  color:
+                    selectedTask.status === "Completed"
+                      ? "#16a34a"
+                      : selectedTask.status === "In Progress"
+                        ? "#2563eb"
+                        : selectedTask.status === "Pending"
+                          ? "#f59e0b"
+                          : selectedTask.status === "Failed Task"
+                            ? "#ef4444"
+                            : "#7c3aed",
                   fontWeight: 700,
                 }}
               />
@@ -285,19 +311,7 @@ const TaskListCards = () => {
                     textAlign: "right",
                   }}
                 >
-                  Created: {selectedTask.createdDate} |{" "}
-                  {selectedTask.createdTime}
-                </Typography>
-
-                <Typography
-                  sx={{
-                    fontSize: "0.82rem",
-                    color: "#64748b",
-                    textAlign: "right",
-                  }}
-                >
-                  Updated: {selectedTask.updatedDate} |{" "}
-                  {selectedTask.updatedTime}
+                  Created: {selectedTask.date}
                 </Typography>
               </Box>
             </Stack>
@@ -343,13 +357,6 @@ const TaskListCards = () => {
                 }}
               >
                 {selectedTask.description}
-                <br />
-                <br />
-                This task requires proper implementation, responsive layouts,
-                optimized component structures, and clean UI consistency across
-                the employee management system dashboard. Ensure all modules
-                follow the same design language and maintain reusable
-                architecture.
               </Typography>
             </Box>
           </DialogContent>

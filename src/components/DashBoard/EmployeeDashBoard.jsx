@@ -8,8 +8,8 @@ const EmployeeDashBoard = ({ userData }) => {
   return (
     <>
       <EmployeeDashboadHeader employeeName={userData.name} />
-      <TaskNumbers />
-      <TaskListCards />
+      <TaskNumbers userData={userData} />
+      <TaskListCards userData={userData} />
     </>
   );
 };

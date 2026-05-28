@@ -2,62 +2,55 @@ import React from "react";
 import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+import PendingActionsOutlinedIcon from "@mui/icons-material/PendingActionsOutlined";
+import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 
-const taskData = [
-  {
-    id: 1,
-    title: "New Task",
-    count: 12,
-    icon: <AssignmentOutlinedIcon />,
-    bgColor: "#2563eb",
-  },
-  {
-    id: 2,
-    title: "Completed",
-    count: 28,
-    icon: <CheckCircleIcon />,
-    bgColor: "#16a34a",
-  },
-  {
-    id: 3,
-    title: "Accepted",
-    count: 18,
-    icon: <ThumbUpAltOutlinedIcon />,
-    bgColor: "#f59e0b",
-  },
-  {
-    id: 4,
-    title: "Failed",
-    count: 5,
-    icon: <HighlightOffOutlinedIcon />,
-    bgColor: "#ef4444",
-  },
-];
+const TaskNumbers = ({ userData }) => {
+  const taskStyles = {
+    "New Task": {
+      icon: <AssignmentOutlinedIcon />,
+      bgColor: "#2563eb",
+    },
 
-const TaskNumbers = () => {
+    "In Progress": {
+      icon: <AutorenewOutlinedIcon />,
+      bgColor: "#f59e0b",
+    },
+
+    Completed: {
+      icon: <CheckCircleIcon />,
+      bgColor: "#16a34a",
+    },
+
+    Pending: {
+      icon: <PendingActionsOutlinedIcon />,
+      bgColor: "#7c3aed",
+    },
+
+    "Failed Task": {
+      icon: <HighlightOffOutlinedIcon />,
+      bgColor: "#ef4444",
+    },
+  };
+
   return (
     <Box sx={{ mt: 3 }}>
-      <Grid container spacing={3} sx={{ justifyContent: "space-around" }}>
-        {taskData.map((task) => (
+      <Grid container spacing={2} sx={{ justifyContent: "center" }}>
+        {userData?.taskCount?.map((task, index) => (
           <Grid
             item
             sx={{
-              width: { xs: "90%", sm: "45%", md: "20%", lg: "20%" },
+              width: { xs: "90%", sm: "45%", md: "30%", lg: "18%" },
               height: { xs: "300px", sm: "250px", md: "200px", lg: "200px" },
             }}
-            xs={12}
-            sm={6}
-            md={6}
-            lg={3}
-            key={task.id}
+            key={index}
           >
             <Card
               elevation={0}
               sx={{
                 borderRadius: "20px",
-                background: task.bgColor,
+                background: taskStyles[task.status]?.bgColor,
                 color: "#fff",
                 cursor: "pointer",
                 overflow: "hidden",
@@ -117,7 +110,7 @@ const TaskNumbers = () => {
                     },
                   }}
                 >
-                  {task.icon}
+                  {taskStyles[task.status]?.icon}
                 </Box>
 
                 {/* Count */}
@@ -143,7 +136,7 @@ const TaskNumbers = () => {
                     opacity: 0.95,
                   }}
                 >
-                  {task.title}
+                  {task.status}
                 </Typography>
               </CardContent>
             </Card>

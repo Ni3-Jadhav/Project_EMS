@@ -8,8 +8,8 @@ const AdminDashboard = ({ userData }) => {
   return (
     <>
       <EmployeeDashboadHeader employeeName={userData.name} />
-      <CreateTask />
-      <AllTaskList />
+      <CreateTask userData={userData} />
+      <AllTaskList userData={userData} />
     </>
   );
 };
