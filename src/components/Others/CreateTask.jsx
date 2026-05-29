@@ -13,8 +13,12 @@ import {
 } from "@mui/material";
 
 import AddTaskRoundedIcon from "@mui/icons-material/AddTaskRounded";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 
 const CreateTask = () => {
+  const data = useContext(AuthContext);
+  const usersData = data.userData.employees;
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -209,13 +213,11 @@ const CreateTask = () => {
                       borderRadius: "14px",
                     }}
                   >
-                    <MenuItem value="Nitin Jadhav">Nitin Jadhav</MenuItem>
-
-                    <MenuItem value="Rahul Sharma">Rahul Sharma</MenuItem>
-
-                    <MenuItem value="Priya Patil">Priya Patil</MenuItem>
-
-                    <MenuItem value="Aman Verma">Aman Verma</MenuItem>
+                    {usersData.map((employee) => (
+                      <MenuItem key={employee.id} value={employee.name}>
+                        {employee.name}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>

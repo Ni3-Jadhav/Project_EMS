@@ -8,63 +8,14 @@ import {
   DialogContent,
   IconButton,
   Stack,
+  TextField,
+  MenuItem,
 } from "@mui/material";
 
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { StackedBarChart } from "@mui/icons-material";
 
-const taskList = [
-  {
-    id: 1,
-    priority: "Very High",
-    title: "Complete Employee Dashboard UI",
-    createdDate: "23 May 2026",
-    createdTime: "10:30 AM",
-    updatedDate: "24 May 2026",
-    updatedTime: "02:15 PM",
-    color: "#ef4444",
-    description:
-      "Design and implement a responsive employee dashboard interface using React.js and Material UI. Include task cards, charts, employee statistics, and optimized layouts for mobile, tablet, and desktop screens.",
-  },
-  {
-    id: 2,
-    priority: "High",
-    title: "API Integration for Attendance",
-    createdDate: "21 May 2026",
-    createdTime: "09:20 AM",
-    updatedDate: "22 May 2026",
-    updatedTime: "05:40 PM",
-    color: "#f59e0b",
-    description:
-      "Integrate attendance APIs with frontend modules and display employee attendance records dynamically. Handle loading states, validations, and proper error handling for failed API requests.",
-  },
-  {
-    id: 3,
-    priority: "Medium",
-    title: "Optimize Dashboard Performance",
-    createdDate: "20 May 2026",
-    createdTime: "11:00 AM",
-    updatedDate: "21 May 2026",
-    updatedTime: "04:10 PM",
-    color: "#2563eb",
-    description:
-      "Improve rendering performance by optimizing reusable components, reducing unnecessary re-renders, and implementing lazy loading where needed for large dashboard sections.",
-  },
-  {
-    id: 4,
-    priority: "Low",
-    title: "Prepare Weekly Report",
-    createdDate: "18 May 2026",
-    createdTime: "01:00 PM",
-    updatedDate: "19 May 2026",
-    updatedTime: "03:25 PM",
-    color: "#10b981",
-    description:
-      "Generate and prepare the weekly employee activity report with project updates, completed tasks, pending items, and team performance summaries for management review.",
-  },
-];
-
-const TaskListCards = () => {
+const TaskListCards = ({ userData }) => {
   const [selectedTask, setSelectedTask] = useState(null);
 
   return (
@@ -100,7 +51,7 @@ const TaskListCards = () => {
           },
         }}
       >
-        {taskList.map((task) => (
+        {userData?.tasks.map((task) => (
           <Card
             key={task.id}
             onClick={() => setSelectedTask(task)}
@@ -134,7 +85,15 @@ const TaskListCards = () => {
                 left: 0,
                 width: "100%",
                 height: "5px",
-                background: task.color,
+
+                background:
+                  task.priority === "Very High"
+                    ? "#ef4444"
+                    : task.priority === "High"
+                      ? "#f59e0b"
+                      : task.priority === "Medium"
+                        ? "#2563eb"
+                        : "#10b981",
               },
             }}
           >
@@ -152,8 +111,24 @@ const TaskListCards = () => {
                 label={task.priority}
                 size="small"
                 sx={{
-                  background: `${task.color}20`,
-                  color: task.color,
+                  background:
+                    task.priority === "Very High"
+                      ? "#ef444420"
+                      : task.priority === "High"
+                        ? "#f59e0b20"
+                        : task.priority === "Medium"
+                          ? "#2563eb20"
+                          : "#10b98120",
+
+                  color:
+                    task.priority === "Very High"
+                      ? "#ef4444"
+                      : task.priority === "High"
+                        ? "#f59e0b"
+                        : task.priority === "Medium"
+                          ? "#2563eb"
+                          : "#10b981",
+
                   fontWeight: 600,
                   borderRadius: "8px",
                 }}
@@ -166,7 +141,7 @@ const TaskListCards = () => {
                   fontWeight: 500,
                 }}
               >
-                {task.createdDate}
+                {task.date}
               </Typography>
             </Stack>
 
@@ -199,22 +174,27 @@ const TaskListCards = () => {
               {task.description}
             </Typography>
 
-            {/* View More */}
-            <Typography
-              sx={{
-                mt: 2,
-                color: "#2563eb",
-                fontWeight: 600,
-                fontSize: "0.92rem",
-                width: "fit-content",
-
-                "&:hover": {
-                  textDecoration: "underline",
-                },
-              }}
+            {/* Footer */}
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              mt={2}
             >
-              View More
-            </Typography>
+              <Typography
+                sx={{
+                  color: "#2563eb",
+                  fontWeight: 600,
+                  fontSize: "0.92rem",
+
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                View More
+              </Typography>
+            </Stack>
           </Card>
         ))}
       </Box>
@@ -224,133 +204,270 @@ const TaskListCards = () => {
         open={Boolean(selectedTask)}
         onClose={() => setSelectedTask(null)}
         fullWidth
-        maxWidth="sm"
+        maxWidth="md"
         PaperProps={{
           sx: {
-            borderRadius: "24px",
-            p: 1,
+            borderRadius: {
+              xs: "18px",
+              sm: "26px",
+            },
             overflow: "hidden",
+            background: "#ffffff",
+            boxShadow: "0 25px 60px rgba(15,23,42,0.18)",
           },
         }}
       >
         {selectedTask && (
-          <DialogContent sx={{ p: 3 }}>
-            {/* Close Button */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                mb: 1,
-              }}
-            >
-              <IconButton
-                onClick={() => setSelectedTask(null)}
-                sx={{
-                  background: "#f1f5f9",
-
-                  "&:hover": {
-                    background: "#e2e8f0",
-                  },
-                }}
-              >
-                <CloseRoundedIcon />
-              </IconButton>
-            </Box>
-
-            {/* Header */}
+          <DialogContent
+            sx={{
+              p: {
+                xs: 2.5,
+                sm: 4,
+              },
+            }}
+          >
+            {/* Top Header */}
             <Stack
               sx={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
-                alignItems: "center",
-                mb: 2,
-                flexWrap: "wrap",
+                alignItems: "flex-start",
+                mb: 3,
               }}
             >
-              <Chip
-                label={selectedTask.priority}
+              {/* Left */}
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "1.3rem",
+                      sm: "1.7rem",
+                    },
+                    fontWeight: 700,
+                    color: "#0f172a",
+                    lineHeight: 1.4,
+                    mb: 1,
+                  }}
+                >
+                  {selectedTask.title}
+                </Typography>
+
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                  {/* Priority */}
+                  <Chip
+                    label={selectedTask.priority}
+                    size="small"
+                    sx={{
+                      background:
+                        selectedTask.priority === "Very High"
+                          ? "#ef444420"
+                          : selectedTask.priority === "High"
+                            ? "#f59e0b20"
+                            : selectedTask.priority === "Medium"
+                              ? "#2563eb20"
+                              : "#10b98120",
+
+                      color:
+                        selectedTask.priority === "Very High"
+                          ? "#ef4444"
+                          : selectedTask.priority === "High"
+                            ? "#f59e0b"
+                            : selectedTask.priority === "Medium"
+                              ? "#2563eb"
+                              : "#10b981",
+
+                      fontWeight: 700,
+                      borderRadius: "8px",
+                    }}
+                  />
+
+                  {/* Category */}
+                  <Chip
+                    label={selectedTask.category}
+                    size="small"
+                    sx={{
+                      background: "#7c3aed20",
+                      color: "#7c3aed",
+                      fontWeight: 700,
+                      borderRadius: "8px",
+                    }}
+                  />
+
+                  {/* Current Status */}
+                  <Chip
+                    label={selectedTask.status}
+                    size="small"
+                    sx={{
+                      background:
+                        selectedTask.status === "Completed"
+                          ? "#16a34a20"
+                          : selectedTask.status === "In Progress"
+                            ? "#2563eb20"
+                            : selectedTask.status === "Pending"
+                              ? "#f59e0b20"
+                              : selectedTask.status === "Failed Task"
+                                ? "#ef444420"
+                                : "#7c3aed20",
+
+                      color:
+                        selectedTask.status === "Completed"
+                          ? "#16a34a"
+                          : selectedTask.status === "In Progress"
+                            ? "#2563eb"
+                            : selectedTask.status === "Pending"
+                              ? "#f59e0b"
+                              : selectedTask.status === "Failed Task"
+                                ? "#ef4444"
+                                : "#7c3aed",
+
+                      fontWeight: 700,
+                      borderRadius: "8px",
+                    }}
+                  />
+                </Stack>
+              </Box>
+
+              {/* Close Button */}
+              <IconButton
+                onClick={() => setSelectedTask(null)}
                 sx={{
-                  background: `${selectedTask.color}20`,
-                  color: selectedTask.color,
-                  fontWeight: 700,
+                  width: 42,
+                  height: 42,
+                  background: "#f1f5f9",
+                  transition: "all 0.3s ease",
+
+                  "&:hover": {
+                    background: "#e2e8f0",
+                    transform: "rotate(90deg)",
+                  },
                 }}
-              />
+              >
+                <CloseRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            {/* Date Section */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: {
+                  xs: "column",
+                  sm: "row",
+                },
+                justifyContent: "space-between",
+                gap: 2,
+                mb: 3,
+                p: 2,
+                borderRadius: "16px",
+                background: "#f8fafc",
+                border: "1px solid #e2e8f0",
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: "0.78rem",
+                    color: "#64748b",
+                    mb: 0.5,
+                  }}
+                >
+                  Created Date
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontSize: "0.95rem",
+                    fontWeight: 600,
+                    color: "#0f172a",
+                  }}
+                >
+                  {selectedTask.date}
+                </Typography>
+              </Box>
 
               <Box>
                 <Typography
                   sx={{
-                    fontSize: "0.82rem",
+                    fontSize: "0.78rem",
                     color: "#64748b",
-                    textAlign: "right",
+                    mb: 0.5,
                   }}
                 >
-                  Created: {selectedTask.createdDate} |{" "}
-                  {selectedTask.createdTime}
+                  Change Task Status
                 </Typography>
 
-                <Typography
+                <TextField
+                  select
+                  size="small"
+                  defaultValue={selectedTask.status}
                   sx={{
-                    fontSize: "0.82rem",
-                    color: "#64748b",
-                    textAlign: "right",
+                    minWidth: {
+                      xs: "100%",
+                      sm: "220px",
+                    },
+
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      background: "#ffffff",
+                    },
                   }}
                 >
-                  Updated: {selectedTask.updatedDate} |{" "}
-                  {selectedTask.updatedTime}
-                </Typography>
-              </Box>
-            </Stack>
+                  <MenuItem value="New Task">New Task</MenuItem>
 
-            {/* Title */}
-            <Typography
-              sx={{
-                fontSize: {
-                  xs: "1.3rem",
-                  sm: "1.5rem",
-                },
-                fontWeight: 700,
-                color: "#0f172a",
-                mb: 2,
-                lineHeight: 1.4,
-              }}
-            >
-              {selectedTask.title}
-            </Typography>
+                  <MenuItem value="Pending">Pending</MenuItem>
+
+                  <MenuItem value="In Progress">In Progress</MenuItem>
+
+                  <MenuItem value="Completed">Completed</MenuItem>
+
+                  <MenuItem value="Failed Task">Failed Task</MenuItem>
+                </TextField>
+              </Box>
+            </Box>
 
             {/* Description */}
-            <Box
-              sx={{
-                maxHeight: "220px",
-                overflowY: "auto",
-                pr: 1,
-
-                "&::-webkit-scrollbar": {
-                  width: "6px",
-                },
-
-                "&::-webkit-scrollbar-thumb": {
-                  background: "#94a3b8",
-                  borderRadius: "10px",
-                },
-              }}
-            >
+            <Box>
               <Typography
                 sx={{
-                  color: "#475569",
-                  fontSize: "0.96rem",
-                  lineHeight: 2,
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  color: "#0f172a",
+                  mb: 1.5,
                 }}
               >
-                {selectedTask.description}
-                <br />
-                <br />
-                This task requires proper implementation, responsive layouts,
-                optimized component structures, and clean UI consistency across
-                the employee management system dashboard. Ensure all modules
-                follow the same design language and maintain reusable
-                architecture.
+                Task Description
               </Typography>
+
+              <Box
+                sx={{
+                  maxHeight: "260px",
+                  overflowY: "auto",
+                  p: 2,
+                  borderRadius: "16px",
+                  background: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+
+                  "&::-webkit-scrollbar": {
+                    width: "6px",
+                  },
+
+                  "&::-webkit-scrollbar-thumb": {
+                    background: "#94a3b8",
+                    borderRadius: "10px",
+                  },
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#475569",
+                    fontSize: "0.96rem",
+                    lineHeight: 2,
+                  }}
+                >
+                  {selectedTask.description}
+                </Typography>
+              </Box>
             </Box>
           </DialogContent>
         )}

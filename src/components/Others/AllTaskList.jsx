@@ -1,52 +1,36 @@
 import React from "react";
 import { Box, Card, Chip, Stack, Typography, Avatar } from "@mui/material";
-
-const taskData = [
-  {
-    id: 1,
-    employee: "Nitin Jadhav",
-    title: "Employee Dashboard UI Design",
-    status: "Completed",
-    color: "#16a34a",
-  },
-  {
-    id: 2,
-    employee: "Rahul Sharma",
-    title: "Attendance API Integration",
-    status: "In Progress",
-    color: "#2563eb",
-  },
-  {
-    id: 3,
-    employee: "Priya Patil",
-    title: "Task Management Module",
-    status: "Pending",
-    color: "#f59e0b",
-  },
-  {
-    id: 4,
-    employee: "Aman Verma",
-    title: "Responsive Layout Testing",
-    status: "Failed",
-    color: "#ef4444",
-  },
-  {
-    id: 5,
-    employee: "Sneha Joshi",
-    title: "Create Authentication Screens",
-    status: "Accepted",
-    color: "#7c3aed",
-  },
-  {
-    id: 6,
-    employee: "Rohit Patil",
-    title: "Optimize Dashboard Performance",
-    status: "Review",
-    color: "#0891b2",
-  },
-];
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 
 const AllTaskList = () => {
+  const data = useContext(AuthContext);
+  const usersData = data.userData.employees;
+
+  const colors = [
+    "#2563eb",
+    "#16a34a",
+    "#f59e0b",
+    "#ef4444",
+    "#7c3aed",
+    "#0891b2",
+  ];
+
+  const employeesTaskData = usersData.map((user) => {
+    const inProgressTask = user.tasks.find(
+      (task) => task.status === "In Progress",
+    );
+
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+    return {
+      id: user.id,
+      employee: user.name,
+      title: inProgressTask ? inProgressTask.title : "-",
+      category: inProgressTask ? inProgressTask.category : "-",
+      color: randomColor,
+    };
+  });
   return (
     <Box sx={{ mt: 4, width: "100%" }}>
       {/* Heading */}
@@ -58,7 +42,8 @@ const AllTaskList = () => {
               fontSize: "0.95rem",
             }}
           >
-            Overview of all assigned employee tasks
+            Overview of all assigned employee tasks which are currently in
+            progress.
           </Typography>
         </Box>
 
@@ -83,7 +68,7 @@ const AllTaskList = () => {
             },
           }}
         >
-          {taskData.map((task) => (
+          {employeesTaskData.map((task) => (
             <Box
               key={task.id}
               sx={{
@@ -154,7 +139,7 @@ const AllTaskList = () => {
 
                 {/* Status */}
                 <Chip
-                  label={task.status}
+                  label={task.category}
                   sx={{
                     px: 1,
                     fontWeight: 600,
