@@ -12,7 +12,8 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 const EmployeeDashboadHeader = ({ employeeName = "Nitin" }) => {
   const handleLogout = () => {
-    console.log("Logout clicked");
+    localStorage.removeItem("loggedInUser");
+    window.location.reload();
   };
 
   return (

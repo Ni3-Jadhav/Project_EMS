@@ -8,6 +8,8 @@ import {
   DialogContent,
   IconButton,
   Stack,
+  TextField,
+  MenuItem,
 } from "@mui/material";
 
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -192,36 +194,6 @@ const TaskListCards = ({ userData }) => {
               >
                 View More
               </Typography>
-
-              <Chip
-                label={task.status}
-                size="small"
-                sx={{
-                  borderRadius: "8px",
-                  fontWeight: 600,
-                  background:
-                    task.status === "Completed"
-                      ? "#16a34a20"
-                      : task.status === "In Progress"
-                        ? "#2563eb20"
-                        : task.status === "Pending"
-                          ? "#f59e0b20"
-                          : task.status === "Failed Task"
-                            ? "#ef444420"
-                            : "#7c3aed20",
-
-                  color:
-                    task.status === "Completed"
-                      ? "#16a34a"
-                      : task.status === "In Progress"
-                        ? "#2563eb"
-                        : task.status === "Pending"
-                          ? "#f59e0b"
-                          : task.status === "Failed Task"
-                            ? "#ef4444"
-                            : "#7c3aed",
-                }}
-              />
             </Stack>
           </Card>
         ))}
@@ -232,132 +204,270 @@ const TaskListCards = ({ userData }) => {
         open={Boolean(selectedTask)}
         onClose={() => setSelectedTask(null)}
         fullWidth
-        maxWidth="sm"
+        maxWidth="md"
         PaperProps={{
           sx: {
-            borderRadius: "24px",
-            p: 1,
+            borderRadius: {
+              xs: "18px",
+              sm: "26px",
+            },
             overflow: "hidden",
+            background: "#ffffff",
+            boxShadow: "0 25px 60px rgba(15,23,42,0.18)",
           },
         }}
       >
         {selectedTask && (
-          <DialogContent sx={{ p: 3 }}>
-            {/* Close Button */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                mb: 1,
-              }}
-            >
-              <IconButton
-                onClick={() => setSelectedTask(null)}
-                sx={{
-                  background: "#f1f5f9",
-
-                  "&:hover": {
-                    background: "#e2e8f0",
-                  },
-                }}
-              >
-                <CloseRoundedIcon />
-              </IconButton>
-            </Box>
-
-            {/* Header */}
+          <DialogContent
+            sx={{
+              p: {
+                xs: 2.5,
+                sm: 4,
+              },
+            }}
+          >
+            {/* Top Header */}
             <Stack
               sx={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
-                alignItems: "center",
-                mb: 2,
-                flexWrap: "wrap",
+                alignItems: "flex-start",
+                mb: 3,
               }}
             >
-              <Chip
-                label={selectedTask.priority}
+              {/* Left */}
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "1.3rem",
+                      sm: "1.7rem",
+                    },
+                    fontWeight: 700,
+                    color: "#0f172a",
+                    lineHeight: 1.4,
+                    mb: 1,
+                  }}
+                >
+                  {selectedTask.title}
+                </Typography>
+
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                  {/* Priority */}
+                  <Chip
+                    label={selectedTask.priority}
+                    size="small"
+                    sx={{
+                      background:
+                        selectedTask.priority === "Very High"
+                          ? "#ef444420"
+                          : selectedTask.priority === "High"
+                            ? "#f59e0b20"
+                            : selectedTask.priority === "Medium"
+                              ? "#2563eb20"
+                              : "#10b98120",
+
+                      color:
+                        selectedTask.priority === "Very High"
+                          ? "#ef4444"
+                          : selectedTask.priority === "High"
+                            ? "#f59e0b"
+                            : selectedTask.priority === "Medium"
+                              ? "#2563eb"
+                              : "#10b981",
+
+                      fontWeight: 700,
+                      borderRadius: "8px",
+                    }}
+                  />
+
+                  {/* Category */}
+                  <Chip
+                    label={selectedTask.category}
+                    size="small"
+                    sx={{
+                      background: "#7c3aed20",
+                      color: "#7c3aed",
+                      fontWeight: 700,
+                      borderRadius: "8px",
+                    }}
+                  />
+
+                  {/* Current Status */}
+                  <Chip
+                    label={selectedTask.status}
+                    size="small"
+                    sx={{
+                      background:
+                        selectedTask.status === "Completed"
+                          ? "#16a34a20"
+                          : selectedTask.status === "In Progress"
+                            ? "#2563eb20"
+                            : selectedTask.status === "Pending"
+                              ? "#f59e0b20"
+                              : selectedTask.status === "Failed Task"
+                                ? "#ef444420"
+                                : "#7c3aed20",
+
+                      color:
+                        selectedTask.status === "Completed"
+                          ? "#16a34a"
+                          : selectedTask.status === "In Progress"
+                            ? "#2563eb"
+                            : selectedTask.status === "Pending"
+                              ? "#f59e0b"
+                              : selectedTask.status === "Failed Task"
+                                ? "#ef4444"
+                                : "#7c3aed",
+
+                      fontWeight: 700,
+                      borderRadius: "8px",
+                    }}
+                  />
+                </Stack>
+              </Box>
+
+              {/* Close Button */}
+              <IconButton
+                onClick={() => setSelectedTask(null)}
                 sx={{
-                  background:
-                    selectedTask.status === "Completed"
-                      ? "#16a34a20"
-                      : selectedTask.status === "In Progress"
-                        ? "#2563eb20"
-                        : selectedTask.status === "Pending"
-                          ? "#f59e0b20"
-                          : selectedTask.status === "Failed Task"
-                            ? "#ef444420"
-                            : "#7c3aed20",
-                  color:
-                    selectedTask.status === "Completed"
-                      ? "#16a34a"
-                      : selectedTask.status === "In Progress"
-                        ? "#2563eb"
-                        : selectedTask.status === "Pending"
-                          ? "#f59e0b"
-                          : selectedTask.status === "Failed Task"
-                            ? "#ef4444"
-                            : "#7c3aed",
-                  fontWeight: 700,
+                  width: 42,
+                  height: 42,
+                  background: "#f1f5f9",
+                  transition: "all 0.3s ease",
+
+                  "&:hover": {
+                    background: "#e2e8f0",
+                    transform: "rotate(90deg)",
+                  },
                 }}
-              />
+              >
+                <CloseRoundedIcon />
+              </IconButton>
+            </Stack>
+
+            {/* Date Section */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: {
+                  xs: "column",
+                  sm: "row",
+                },
+                justifyContent: "space-between",
+                gap: 2,
+                mb: 3,
+                p: 2,
+                borderRadius: "16px",
+                background: "#f8fafc",
+                border: "1px solid #e2e8f0",
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: "0.78rem",
+                    color: "#64748b",
+                    mb: 0.5,
+                  }}
+                >
+                  Created Date
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontSize: "0.95rem",
+                    fontWeight: 600,
+                    color: "#0f172a",
+                  }}
+                >
+                  {selectedTask.date}
+                </Typography>
+              </Box>
 
               <Box>
                 <Typography
                   sx={{
-                    fontSize: "0.82rem",
+                    fontSize: "0.78rem",
                     color: "#64748b",
-                    textAlign: "right",
+                    mb: 0.5,
                   }}
                 >
-                  Created: {selectedTask.date}
+                  Change Task Status
                 </Typography>
-              </Box>
-            </Stack>
 
-            {/* Title */}
-            <Typography
-              sx={{
-                fontSize: {
-                  xs: "1.3rem",
-                  sm: "1.5rem",
-                },
-                fontWeight: 700,
-                color: "#0f172a",
-                mb: 2,
-                lineHeight: 1.4,
-              }}
-            >
-              {selectedTask.title}
-            </Typography>
+                <TextField
+                  select
+                  size="small"
+                  defaultValue={selectedTask.status}
+                  sx={{
+                    minWidth: {
+                      xs: "100%",
+                      sm: "220px",
+                    },
+
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      background: "#ffffff",
+                    },
+                  }}
+                >
+                  <MenuItem value="New Task">New Task</MenuItem>
+
+                  <MenuItem value="Pending">Pending</MenuItem>
+
+                  <MenuItem value="In Progress">In Progress</MenuItem>
+
+                  <MenuItem value="Completed">Completed</MenuItem>
+
+                  <MenuItem value="Failed Task">Failed Task</MenuItem>
+                </TextField>
+              </Box>
+            </Box>
 
             {/* Description */}
-            <Box
-              sx={{
-                maxHeight: "220px",
-                overflowY: "auto",
-                pr: 1,
-
-                "&::-webkit-scrollbar": {
-                  width: "6px",
-                },
-
-                "&::-webkit-scrollbar-thumb": {
-                  background: "#94a3b8",
-                  borderRadius: "10px",
-                },
-              }}
-            >
+            <Box>
               <Typography
                 sx={{
-                  color: "#475569",
-                  fontSize: "0.96rem",
-                  lineHeight: 2,
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  color: "#0f172a",
+                  mb: 1.5,
                 }}
               >
-                {selectedTask.description}
+                Task Description
               </Typography>
+
+              <Box
+                sx={{
+                  maxHeight: "260px",
+                  overflowY: "auto",
+                  p: 2,
+                  borderRadius: "16px",
+                  background: "#f8fafc",
+                  border: "1px solid #e2e8f0",
+
+                  "&::-webkit-scrollbar": {
+                    width: "6px",
+                  },
+
+                  "&::-webkit-scrollbar-thumb": {
+                    background: "#94a3b8",
+                    borderRadius: "10px",
+                  },
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#475569",
+                    fontSize: "0.96rem",
+                    lineHeight: 2,
+                  }}
+                >
+                  {selectedTask.description}
+                </Typography>
+              </Box>
             </Box>
           </DialogContent>
         )}
