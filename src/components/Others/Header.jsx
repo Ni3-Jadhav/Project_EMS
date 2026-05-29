@@ -9,11 +9,19 @@ import {
 } from "@mui/material";
 import WavingHandIcon from "@mui/icons-material/WavingHand";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import { useNavigate } from "react-router-dom";
 
-const EmployeeDashboadHeader = ({ employeeName = "Nitin" }) => {
+const EmployeeDashboadHeader = ({
+  employeeName,
+  setUser,
+  setLoggedInUserData,
+}) => {
+  const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser");
-    window.location.reload();
+    setUser(null);
+    setLoggedInUserData(null);
+    navigate("/login");
   };
 
   return (
