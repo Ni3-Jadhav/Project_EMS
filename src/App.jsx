@@ -12,6 +12,7 @@ import EmployeeDashBoard from "./components/DashBoard/EmployeeDashBoard";
 import AdminDashboard from "./components/DashBoard/AdminDashboard";
 
 import { AuthContext } from "./context/AuthProvider";
+import AdminPreview from "./components/DashBoard/AdminPreview";
 
 const AppContent = () => {
   const [user, setUser] = useState(null);
@@ -140,6 +141,17 @@ const AppContent = () => {
           ) : (
             <Navigate to="/login" />
           )
+        }
+      />
+
+      <Route
+        path="/admin/employee/:employeeId"
+        element={
+          <AdminPreview
+            user={user}
+            setUser={setUser}
+            setLoggedInUserData={setLoggedInUserData}
+          />
         }
       />
 

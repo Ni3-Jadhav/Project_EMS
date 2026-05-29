@@ -1,11 +1,13 @@
 import React from "react";
-import { Box, Card, Chip, Stack, Typography, Avatar } from "@mui/material";
+import { Box, Chip, Typography, Avatar } from "@mui/material";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 
 const AllTaskList = () => {
+  const navigate = useNavigate();
   const data = useContext(AuthContext);
-  const usersData = data.userData.employees;
+  const usersData = data?.userData?.employees || [];
 
   const colors = [
     "#2563eb",
@@ -26,11 +28,19 @@ const AllTaskList = () => {
     return {
       id: user.id,
       employee: user.name,
+      employeeData: user,
       title: inProgressTask ? inProgressTask.title : "-",
       category: inProgressTask ? inProgressTask.category : "-",
       color: randomColor,
     };
   });
+
+  const handleClick = (employee) => {
+    navigate(`/admin/employee/${employee.id}`, {
+      state: { employeeData: employee },
+    });
+  };
+
   return (
     <Box sx={{ mt: 4, width: "100%" }}>
       {/* Heading */}
@@ -108,6 +118,7 @@ const AllTaskList = () => {
                     fontWeight: 700,
                     fontSize: "1rem",
                   }}
+                  onClick={() => handleClick(task.employeeData)}
                 >
                   {task.employee.charAt(0)}
                 </Avatar>
@@ -121,6 +132,7 @@ const AllTaskList = () => {
                       color: "#0f172a",
                       // mb: 0.5,
                     }}
+                    onClick={() => handleClick(task.employeeData)}
                   >
                     {task.employee}
                   </Typography>
