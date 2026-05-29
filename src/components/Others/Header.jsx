@@ -9,11 +9,21 @@ import {
 } from "@mui/material";
 import WavingHandIcon from "@mui/icons-material/WavingHand";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import { useNavigate } from "react-router-dom";
 
-const EmployeeDashboadHeader = ({ employeeName = "Nitin" }) => {
+const Header = ({
+  employeeName,
+  setUser,
+  setLoggedInUserData,
+  subtitleText = "Welcome back to your dashboard",
+  adminPreview = false,
+}) => {
+  const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser");
-    window.location.reload();
+    setUser(null);
+    setLoggedInUserData(null);
+    navigate("/login");
   };
 
   return (
@@ -76,7 +86,7 @@ const EmployeeDashboadHeader = ({ employeeName = "Nitin" }) => {
                   lineHeight: 1.2,
                 }}
               >
-                Hello, {employeeName}
+                Hello, {employeeName || "User"}
               </Typography>
 
               <WavingHandIcon
@@ -97,39 +107,72 @@ const EmployeeDashboadHeader = ({ employeeName = "Nitin" }) => {
                 mt: 0.3,
               }}
             >
-              Welcome back to your dashboard
+              {subtitleText}
             </Typography>
           </Box>
         </Box>
 
         {/* Right Section */}
-        <Button
-          variant="contained"
-          startIcon={<LogoutRoundedIcon />}
-          onClick={handleLogout}
+        <Box
           sx={{
-            px: { xs: 2, sm: 3 },
-            py: 1,
-            borderRadius: "12px",
-            textTransform: "none",
-            fontSize: "0.95rem",
-            fontWeight: 600,
-            background: "#ef4444",
-            boxShadow: "none",
-            transition: "all 0.3s ease",
-
-            "&:hover": {
-              background: "#dc2626",
-              transform: "translateY(-2px)",
-              boxShadow: "0 8px 20px rgba(239,68,68,0.25)",
-            },
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
           }}
         >
-          Logout
-        </Button>
+          {adminPreview && (
+            <Button
+              variant="outlined"
+              onClick={() => navigate("/admin")}
+              startIcon={<LogoutRoundedIcon />}
+              sx={{
+                px: { xs: 2, sm: 3 },
+                py: 1,
+                borderRadius: "12px",
+                textTransform: "none",
+                fontSize: "0.95rem",
+                fontWeight: 600,
+                boxShadow: "none",
+                transition: "all 0.3s ease",
+                borderColor: "#3d6b58",
+                color: "#3d6b58",
+                "&:hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 8px 20px rgba(57, 243, 135, 0.25)",
+                },
+              }}
+            >
+              Back
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            startIcon={<LogoutRoundedIcon />}
+            onClick={handleLogout}
+            sx={{
+              px: { xs: 2, sm: 3 },
+              py: 1,
+              borderRadius: "12px",
+              textTransform: "none",
+              fontSize: "0.95rem",
+              fontWeight: 600,
+              background: "#ef4444",
+              boxShadow: "none",
+              transition: "all 0.3s ease",
+
+              "&:hover": {
+                background: "#dc2626",
+                transform: "translateY(-2px)",
+                boxShadow: "0 8px 20px rgba(239,68,68,0.25)",
+              },
+            }}
+          >
+            Logout
+          </Button>
+        </Box>
       </Toolbar>
     </AppBar>
   );
 };
 
-export default EmployeeDashboadHeader;
+export default Header;

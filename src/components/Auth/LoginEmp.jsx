@@ -61,8 +61,6 @@ const LoginEmp = ({ handleLogin }) => {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log("Login Submitted", loginData);
-
       setLoginData(initialFormData);
       handleLogin(loginData.email, loginData.password);
       setErrors({
