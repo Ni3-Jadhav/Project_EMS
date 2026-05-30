@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   Card,
@@ -13,10 +13,27 @@ import {
 } from "@mui/material";
 
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { StackedBarChart } from "@mui/icons-material";
+import { AuthContext } from "../../context/AuthProvider";
+import { updateTaskStatus } from "../../utils/LocalStorage";
 
 const TaskListCards = ({ userData }) => {
   const [selectedTask, setSelectedTask] = useState(null);
+  const authData = useContext(AuthContext);
+
+  const changeTaskStatus = (taskId, newStatus) => {
+    if (!userData?.email) {
+      return;
+    }
+
+    const updatedEmployee = updateTaskStatus(userData.email, taskId, newStatus);
+
+    if (updatedEmployee) {
+      authData.refreshUserData?.();
+      setSelectedTask((prevTask) =>
+        prevTask ? { ...prevTask, status: newStatus } : prevTask,
+      );
+    }
+  };
 
   return (
     <>
@@ -400,7 +417,8 @@ const TaskListCards = ({ userData }) => {
                 <TextField
                   select
                   size="small"
-                  defaultValue={selectedTask.status}
+                  value={selectedTask.status}
+                  onChange={(e) => changeTaskStatus(selectedTask.id, e.target.value)}
                   sx={{
                     minWidth: {
                       xs: "100%",
