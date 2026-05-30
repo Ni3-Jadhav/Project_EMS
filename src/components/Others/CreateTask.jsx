@@ -10,6 +10,7 @@ import {
   InputLabel,
   FormControl,
   Select,
+  FormHelperText,
 } from "@mui/material";
 
 import AddTaskRoundedIcon from "@mui/icons-material/AddTaskRounded";
@@ -20,7 +21,7 @@ import { addTaskToEmployee } from "../../utils/LocalStorage";
 const CreateTask = () => {
   const data = useContext(AuthContext);
   const usersData = data?.userData?.employees || [];
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     title: "",
     description: "",
     date: "",
@@ -28,17 +29,72 @@ const CreateTask = () => {
     category: "",
     priority: "",
     status: "New Task",
-  });
+  };
+  const initialErrors = {
+    title: "",
+    description: "",
+    date: "",
+    assignTo: "",
+    category: "",
+    priority: "",
+  };
+  const [formData, setFormData] = useState(initialFormData);
 
+  const [errors, setErrors] = useState(initialErrors);
+
+  const validateForm = () => {
+    let tempErrors = {};
+    let isValid = true;
+
+    if (!formData.title.trim()) {
+      tempErrors.title = "Task Title is required";
+      isValid = false;
+    }
+    if (!formData.description.trim()) {
+      tempErrors.description = "Task Description is required";
+      isValid = false;
+    }
+    const today = new Date().toISOString().split("T")[0];
+
+    if (!formData.date) {
+      tempErrors.date = "Task Date is required";
+      isValid = false;
+    } else if (formData.date < today) {
+      tempErrors.date = "Please select a future date";
+      isValid = false;
+    }
+    if (!formData.assignTo) {
+      tempErrors.assignTo = "Please assign the task to an employee";
+      isValid = false;
+    }
+    if (!formData.category) {
+      tempErrors.category = "Task Category is required";
+      isValid = false;
+    }
+    if (!formData.priority) {
+      tempErrors.priority = "Task Priority is required";
+      isValid = false;
+    }
+    setErrors(tempErrors);
+    return isValid;
+  };
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setErrors({
+      ...errors,
+      [e.target.name]: "",
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+    setErrors(initialErrors);
     console.log(formData);
 
     const newTask = {
@@ -48,9 +104,11 @@ const CreateTask = () => {
       category: formData.category,
       priority: formData.priority,
       status: formData.status || "New Task",
-    }
+    };
 
-    const assignedEmployee = usersData.find((e) => e.email === formData.assignTo);
+    const assignedEmployee = usersData.find(
+      (e) => e.email === formData.assignTo,
+    );
 
     if (assignedEmployee) {
       const savedEmployee = addTaskToEmployee(formData.assignTo, newTask);
@@ -63,15 +121,7 @@ const CreateTask = () => {
       }
     }
 
-    setFormData({
-      title: "",
-      description: "",
-      date: "",
-      assignTo: "",
-      category: "",
-      priority: "",
-      status: "New Task",
-    });
+    setFormData(initialFormData);
   };
 
   return (
@@ -162,6 +212,8 @@ const CreateTask = () => {
                   onChange={handleChange}
                   placeholder="Enter task title"
                   variant="outlined"
+                  error={Boolean(errors.title)}
+                  helperText={errors.title}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "14px",
@@ -190,6 +242,8 @@ const CreateTask = () => {
                   onChange={handleChange}
                   placeholder="Enter task description"
                   variant="outlined"
+                  error={Boolean(errors.description)}
+                  helperText={errors.description}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "14px",
@@ -220,6 +274,11 @@ const CreateTask = () => {
                   name="date"
                   value={formData.date}
                   onChange={handleChange}
+                  error={Boolean(errors.date)}
+                  helperText={errors.date}
+                  inputProps={{
+                    min: new Date().toISOString().split("T")[0],
+                  }}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -236,7 +295,7 @@ const CreateTask = () => {
                 item
                 sx={{ width: { xs: "100%", sm: "100%", md: "40%", lg: "25%" } }}
               >
-                <FormControl fullWidth>
+                <FormControl fullWidth error={Boolean(errors.assignTo)}>
                   <InputLabel>Assign To</InputLabel>
 
                   <Select
@@ -254,6 +313,7 @@ const CreateTask = () => {
                       </MenuItem>
                     ))}
                   </Select>
+                  <FormHelperText>{errors.assignTo}</FormHelperText>
                 </FormControl>
               </Grid>
 
@@ -262,7 +322,7 @@ const CreateTask = () => {
                 item
                 sx={{ width: { xs: "100%", sm: "100%", md: "40%", lg: "25%" } }}
               >
-                <FormControl fullWidth>
+                <FormControl fullWidth error={Boolean(errors.category)}>
                   <InputLabel>Category</InputLabel>
 
                   <Select
@@ -270,6 +330,8 @@ const CreateTask = () => {
                     value={formData.category}
                     onChange={handleChange}
                     label="Category"
+                    error={Boolean(errors.category)}
+                    helperText={errors.category}
                     sx={{
                       borderRadius: "14px",
                     }}
@@ -282,6 +344,7 @@ const CreateTask = () => {
 
                     <MenuItem value="Deployment">Deployment</MenuItem>
                   </Select>
+                  <FormHelperText>{errors.category}</FormHelperText>
                 </FormControl>
               </Grid>
 
@@ -290,7 +353,7 @@ const CreateTask = () => {
                 item
                 sx={{ width: { xs: "100%", sm: "100%", md: "40%", lg: "25%" } }}
               >
-                <FormControl fullWidth>
+                <FormControl fullWidth error={Boolean(errors.priority)}>
                   <InputLabel>Priority</InputLabel>
 
                   <Select
@@ -310,6 +373,7 @@ const CreateTask = () => {
 
                     <MenuItem value="Very High">Very High</MenuItem>
                   </Select>
+                  <FormHelperText>{errors.priority}</FormHelperText>
                 </FormControl>
               </Grid>
             </Box>

@@ -1,8 +1,8 @@
 const employees = [
   {
     id: 1,
-    name: "Nitin Jadhav",
-    email: "nitin.jadhav@gmail.com",
+    name: "Nayan Shinde",
+    email: "nayan.shinde@gmail.com",
     password: "user@123",
 
     taskCount: [
@@ -535,6 +535,51 @@ export const addTaskToEmployee = (employeeEmail, task) => {
     return {
       ...employee,
       tasks: [...(employee.tasks || []), newTask],
+      taskCount: updatedTaskCount || employee.taskCount,
+    };
+  });
+
+  const assignedEmployee = updatedEmployees.find(
+    (employee) => employee.email === employeeEmail,
+  );
+
+  if (!assignedEmployee) {
+    return null;
+  }
+
+  localStorage.setItem("employees", JSON.stringify(updatedEmployees));
+  return assignedEmployee;
+};
+
+export const updateTaskStatus = (employeeEmail, taskId, newStatus) => {
+  const employeesData = JSON.parse(localStorage.getItem("employees")) || [];
+
+  const updatedEmployees = employeesData.map((employee) => {
+    if (employee.email !== employeeEmail) {
+      return employee;
+    }
+
+    const existingTask = employee.tasks?.find((task) => task.id === taskId);
+    const updatedTasks = employee.tasks?.map((task) =>
+      task.id === taskId ? { ...task, status: newStatus } : task,
+    );
+
+    const updatedTaskCount = employee.taskCount?.map((countItem) => {
+      if (!existingTask || existingTask.status === newStatus) {
+        return countItem;
+      }
+      if (countItem.status === existingTask.status) {
+        return { ...countItem, count: Math.max(0, countItem.count - 1) };
+      }
+      if (countItem.status === newStatus) {
+        return { ...countItem, count: countItem.count + 1 };
+      }
+      return countItem;
+    });
+
+    return {
+      ...employee,
+      tasks: updatedTasks || employee.tasks,
       taskCount: updatedTaskCount || employee.taskCount,
     };
   });

@@ -34,7 +34,12 @@ const AdminPreview = ({ user, setUser, setLoggedInUserData }) => {
       adminPreview={true}
       setLoggedInUserData={setLoggedInUserData}
       headerName={adminSession?.data?.name || "Admin"}
-      headerSubtitle="Admin preview of employee dashboard"
+      headerSubtitle={
+        <>
+          You are currently viewing the dashboard of{" "}
+          <strong>{previewEmployee.name}</strong> in Admin Preview mode.
+        </>
+      }
     />
   );
 };
