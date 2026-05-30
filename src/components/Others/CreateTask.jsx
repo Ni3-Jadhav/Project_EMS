@@ -15,16 +15,19 @@ import {
 import AddTaskRoundedIcon from "@mui/icons-material/AddTaskRounded";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import { addTaskToEmployee } from "../../utils/LocalStorage";
 
 const CreateTask = () => {
   const data = useContext(AuthContext);
-  const usersData = data.userData.employees;
+  const usersData = data?.userData?.employees || [];
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     date: "",
     assignTo: "",
     category: "",
+    priority: "",
+    status: "New Task",
   });
 
   const handleChange = (e) => {
@@ -37,6 +40,38 @@ const CreateTask = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+
+    const newTask = {
+      title: formData.title,
+      description: formData.description,
+      date: formData.date,
+      category: formData.category,
+      priority: formData.priority,
+      status: formData.status || "New Task",
+    }
+
+    const assignedEmployee = usersData.find((e) => e.email === formData.assignTo);
+
+    if (assignedEmployee) {
+      const savedEmployee = addTaskToEmployee(formData.assignTo, newTask);
+
+      if (savedEmployee) {
+        console.log("new task saved for employee", savedEmployee);
+        data.refreshUserData?.();
+      } else {
+        console.error("Failed to save task: assigned employee not found.");
+      }
+    }
+
+    setFormData({
+      title: "",
+      description: "",
+      date: "",
+      assignTo: "",
+      category: "",
+      priority: "",
+      status: "New Task",
+    });
   };
 
   return (
@@ -214,7 +249,7 @@ const CreateTask = () => {
                     }}
                   >
                     {usersData.map((employee) => (
-                      <MenuItem key={employee.id} value={employee.name}>
+                      <MenuItem key={employee.id} value={employee.email}>
                         {employee.name}
                       </MenuItem>
                     ))}
@@ -246,6 +281,34 @@ const CreateTask = () => {
                     <MenuItem value="Testing">Testing</MenuItem>
 
                     <MenuItem value="Deployment">Deployment</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              {/** Priority */}
+              <Grid
+                item
+                sx={{ width: { xs: "100%", sm: "100%", md: "40%", lg: "25%" } }}
+              >
+                <FormControl fullWidth>
+                  <InputLabel>Priority</InputLabel>
+
+                  <Select
+                    name="priority"
+                    value={formData.priority}
+                    onChange={handleChange}
+                    label="Priority"
+                    sx={{
+                      borderRadius: "14px",
+                    }}
+                  >
+                    <MenuItem value="Low">Low</MenuItem>
+
+                    <MenuItem value="Medium">Medium</MenuItem>
+
+                    <MenuItem value="High">High</MenuItem>
+
+                    <MenuItem value="Very High">Very High</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

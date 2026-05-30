@@ -506,3 +506,47 @@ export const getLocalStorage = () => {
   const adminData = JSON.parse(localStorage.getItem("admin"));
   return { employees: employeesData, admin: adminData };
 };
+
+export const addTaskToEmployee = (employeeEmail, task) => {
+  const employeesData = JSON.parse(localStorage.getItem("employees")) || [];
+
+  const updatedEmployees = employeesData.map((employee) => {
+    if (employee.email !== employeeEmail) {
+      return employee;
+    }
+
+    const nextTaskId =
+      (employee.tasks?.reduce(
+        (maxId, currentTask) => Math.max(maxId, currentTask.id),
+        0,
+      ) || 0) + 1;
+
+    const newTask = {
+      id: nextTaskId,
+      ...task,
+    };
+
+    const updatedTaskCount = employee.taskCount?.map((countItem) =>
+      countItem.status === newTask.status
+        ? { ...countItem, count: countItem.count + 1 }
+        : countItem,
+    );
+
+    return {
+      ...employee,
+      tasks: [...(employee.tasks || []), newTask],
+      taskCount: updatedTaskCount || employee.taskCount,
+    };
+  });
+
+  const assignedEmployee = updatedEmployees.find(
+    (employee) => employee.email === employeeEmail,
+  );
+
+  if (!assignedEmployee) {
+    return null;
+  }
+
+  localStorage.setItem("employees", JSON.stringify(updatedEmployees));
+  return assignedEmployee;
+};
