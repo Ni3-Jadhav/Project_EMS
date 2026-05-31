@@ -7,12 +7,12 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import LoginEmp from "./components/Auth/LoginEmp";
-import EmployeeDashBoard from "./components/DashBoard/EmployeeDashBoard";
-import AdminDashboard from "./components/DashBoard/AdminDashboard";
+import LoginUser from "./pages/Auth/LoginUser";
+import EmployeeDashBoard from "./pages/DashBoard/EmployeeDashBoard";
+import AdminDashboard from "./pages/DashBoard/AdminDashboard";
 
 import { AuthContext } from "./context/AuthProvider";
-import AdminPreview from "./components/DashBoard/AdminPreview";
+import AdminPreview from "./pages/DashBoard/AdminPreview";
 
 const AppContent = () => {
   const [user, setUser] = useState(null);
@@ -103,7 +103,7 @@ const AppContent = () => {
         path="/login"
         element={
           !user ? (
-            <LoginEmp handleLogin={handleLogin} />
+            < LoginUser handleLogin={handleLogin} />
           ) : user === "admin" ? (
             <Navigate to="/admin" />
           ) : (

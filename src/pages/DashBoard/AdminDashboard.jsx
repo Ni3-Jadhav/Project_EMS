@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../Others/Header";
-import CreateTask from "../Others/CreateTask";
-import AllTaskList from "../Others/AllTaskList";
+import Header from "../../components/Header";
+import CreateTask from "../../components/CreateTask";
+import AllTaskList from "../../components/AllTaskList";
 
 const AdminDashboard = ({ userData, setUser, setLoggedInUserData }) => {
   console.log(userData);

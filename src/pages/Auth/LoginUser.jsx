@@ -16,7 +16,7 @@ const initialFormData = {
   password: "",
 };
 
-const LoginEmp = ({ handleLogin }) => {
+const LoginUser = ({ handleLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [loginData, setLoginData] = useState(initialFormData);
@@ -376,4 +376,4 @@ const LoginEmp = ({ handleLogin }) => {
   );
 };
 
-export default LoginEmp;
+export default LoginUser;

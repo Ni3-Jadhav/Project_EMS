@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { AuthContext } from "../../context/AuthProvider";
-import { updateTaskStatus } from "../../utils/LocalStorage";
+import { AuthContext } from "../context/AuthProvider";
+import { updateTaskStatus } from "../utils/LocalStorage";
 
 const TaskListCards = ({ userData }) => {
   const [selectedTask, setSelectedTask] = useState(null);

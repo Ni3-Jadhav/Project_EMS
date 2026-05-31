@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../Others/Header";
-import TaskNumbers from "../Others/TaskNumbers";
-import TaskListCards from "../Others/TaskListCards";
+import Header from "../../components/Header";
+import TaskNumbers from "../../components/TaskNumbers";
+import TaskListCards from "../../components/TaskListCards";
 
 const EmployeeDashBoard = ({
   userData,

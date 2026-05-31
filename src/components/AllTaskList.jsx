@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Chip, Typography, Avatar } from "@mui/material";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthProvider";
+import { AuthContext } from "../context/AuthProvider";
 
 const AllTaskList = () => {
   const navigate = useNavigate();

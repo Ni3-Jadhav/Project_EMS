@@ -15,8 +15,8 @@ import {
 
 import AddTaskRoundedIcon from "@mui/icons-material/AddTaskRounded";
 import { useContext } from "react";
-import { AuthContext } from "../../context/AuthProvider";
-import { addTaskToEmployee } from "../../utils/LocalStorage";
+import { AuthContext } from "../context/AuthProvider";
+import { addTaskToEmployee } from "../utils/LocalStorage";
 
 const CreateTask = () => {
   const data = useContext(AuthContext);
