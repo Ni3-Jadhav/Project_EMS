@@ -24,7 +24,7 @@ Live demo (example): https://ems-ni3.netlify.app/login
 1. Clone the repository and change into the project folder.
 
 ```bash
-git clone <repo-url>
+git clone <https://github.com/Ni3-Jadhav/Project_EMS.git>
 cd Project_ems
 ```
 
