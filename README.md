@@ -2,7 +2,7 @@
 
 This repository contains a small Employee Management System (EMS) built with React and Vite. It is a single‑page application that demonstrates role-based views (Admin / Employee), local persistence using browser `localStorage`, task creation, task lists, task status updates, and an admin preview mode.
 
-Live demo (example): https://ems-ni3.netlify.app/login
+Live demo: https://ems-ni3.netlify.app/login
 
 ## Features
 - Admin and Employee roles with simple authentication (seeded in localStorage)
@@ -83,13 +83,5 @@ npm run preview    # to preview the built app locally
 Refer to [src/main.jsx](src/main.jsx#L1) and [src/context/AuthProvider.jsx](src/context/AuthProvider.jsx#L1) for startup flow.
 
 
-Quick deploy example (Vercel):
-1. Push your repo to GitHub.
-2. Import the repo on Vercel and use the default build command `npm run build` and output directory `dist`.
 
-https://ems-ni3.netlify.app/login
-
-
-## License
-MIT
 
