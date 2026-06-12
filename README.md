@@ -82,20 +82,13 @@ npm run preview    # to preview the built app locally
 
 Refer to [src/main.jsx](src/main.jsx#L1) and [src/context/AuthProvider.jsx](src/context/AuthProvider.jsx#L1) for startup flow.
 
-## Deployment
-This app is a static SPA and can be deployed to any static hosting provider (Netlify, Vercel, GitHub Pages, S3 + CloudFront, etc.).
 
 Quick deploy example (Vercel):
 1. Push your repo to GitHub.
 2. Import the repo on Vercel and use the default build command `npm run build` and output directory `dist`.
 
-Example public URL (replace with your actual domain after deploy):
-
 https://ems-ni3.netlify.app/login
 
-## Notes & next steps
-- This project uses `localStorage` for persistence and is intended for demo / learning purposes. For production, replace localStorage with a backend API and proper authentication.
-- If you want, I can add a `Dockerfile` and GitHub Actions workflow for CI/CD deployment.
 
 ## License
 MIT
